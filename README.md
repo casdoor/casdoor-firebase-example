@@ -12,13 +12,20 @@ Go to [Firebase Console](https://console.firebase.google.com/) to create a proje
 
 ![provider](assets/provider.png)
 
-Select OpenID Connect in Custom providers, fill in the following information:
+You need to enable "Identity Platform" feature first to enable OIDC integration on Firebase.
 
-| Name (in order) | Description                                         |
-|-----------------|-----------------------------------------------------|
-| Issuer (URL)    | Casdoor Server Url, such as `http://localhost:8000` |
-| Client ID       | Client ID for the Casdoor application               |
-| Client Secret   | Client secret for the Casdoor application           |
+Select `OpenID Connect` in Custom providers, fill in the following information:
+
+| Name (in order) | Description                           | Example value                            |
+|-----------------|---------------------------------------|------------------------------------------|
+| Name            | Any be any string you would like      | casdoor                                  |
+| Client ID       | Client ID for the Casdoor application | 294b09fbc17f95daf2fe                     |
+| Issuer (URL)    | Casdoor server URL                    | https://door.casdoor.com                 |
+| Client Secret   | Client secret for Casdoor application | dd8982f7046ccba1bbd7851d5c1ece4e52bf039d |
+
+![oidc_config0](assets/oidc_config0.png)
+
+The above examples values can be retrieved from Casdoor demo site: https://door.casdoor.com/applications/casbin/app-vue-python-example
 
 ![oidc_config1](assets/oidc_config1.png)
 
@@ -28,23 +35,29 @@ Add Callback URL to Casdoor application Redirect URLs:
 
 ![oidc_config2](assets/oidc_config2.png)
 
+![oidc_config3](assets/oidc_config3.png)
+
 #### 1.3. Copy project config
 
-![firebase_config](assets/firebase_config.png)
+Create a `Web app` first:
 
-Copy your project config in project settings to `src/setting.js`.
+![firebase_config0](assets/firebase_config0.png)
+
+Copy your project config in project settings to `src/setting.js`. (the following config is our demo site, which can be used for testing. Change it to your own for production use)
 
 ```javascript
 const firebaseConfig = {
-    apiKey: "×××",
-    authDomain: "casdoor-firebase-example.firebaseapp.com",
-    projectId: "casdoor-firebase-example",
-    storageBucket: "casdoor-firebase-example.appspot.com",
-    messagingSenderId: "×××",
-    appId: "×××",
-    measurementId: "×××"
+  apiKey: "AIzaSyDG8HGY9ULBqXPMIkYEdcOSm2_Yls1E5yY",
+  authDomain: "fb-casdoor.firebaseapp.com",
+  projectId: "fb-casdoor",
+  storageBucket: "fb-casdoor.appspot.com",
+  messagingSenderId: "174511522903",
+  appId: "1:174511522903:web:8649d465718acfac900f12",
+  measurementId: "G-8N504216FH"
 };
 ```
+
+![firebase_config](assets/firebase_config.png)
 
 ### 2. Install dependencies
 
