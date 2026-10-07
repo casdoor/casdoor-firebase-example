@@ -1,38 +1,39 @@
 import './App.css';
-import {getAuth, getRedirectResult, OAuthProvider, signInWithRedirect, signOut} from "firebase/auth";
+import {getAuth, OAuthProvider, onAuthStateChanged, signInWithPopup, signOut} from "firebase/auth";
 import {useEffect, useState} from "react";
 import {app} from "./setting";
+
+const auth = getAuth(app);
+// the ID of the OpenID Connect provider in Firebase: "oidc." + the name given in the Firebase console
+const provider = new OAuthProvider('oidc.casdoor');
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const provider = new OAuthProvider('oidc.casdoor');
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const auth = getAuth(app);
-    getRedirectResult(auth).then((result) => {
-      console.log(result)
-      if (result) {
-        // This is the signed-in user
-        const user = result.user;
-        setUser(user)
-      }
-      setLoading(false)
+    // Firebase keeps the user signed in across reloads, and reports it here
+    return onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setLoading(false);
     });
-  }, [user]);
+  }, []);
 
   const signin = async () => {
-    const auth = getAuth();
-    setLoading(true)
-    await signInWithRedirect(auth, provider);
-    setLoading(false)
+    setError("");
+    try {
+      // opens the Casdoor sign-in page in a popup, Firebase handles the OpenID Connect flow
+      await signInWithPopup(auth, provider);
+    } catch (e) {
+      if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") {
+        setError(e.message);
+      }
+    }
   }
 
-  const signout = () => {
-    const auth = getAuth();
-    signOut(auth).then(() => {
-      setUser(null);
-    })
+  const signout = async () => {
+    await signOut(auth);
   }
 
   return (
@@ -49,6 +50,7 @@ function App() {
             <button onClick={signin}>signin</button>
         )
       }
+      {error && <p style={{color: "red"}}>Failed to sign in: {error}</p>}
     </div>
   );
 }

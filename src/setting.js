@@ -1,10 +1,7 @@
-// Import the functions you need from the SDKs you need
 import {initializeApp} from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// The configuration of your Firebase web app, from the project settings in the Firebase console.
+// The default is our demo project, which has Casdoor (https://door.casdoor.com) as the OpenID Connect provider "casdoor".
 const firebaseConfig = {
   apiKey: "AIzaSyDG8HGY9ULBqXPMIkYEdcOSm2_Yls1E5yY",
   authDomain: "fb-casdoor.firebaseapp.com",
